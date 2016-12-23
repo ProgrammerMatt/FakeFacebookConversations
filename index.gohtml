@@ -1,13 +1,72 @@
+<!doctype html>
 <html>
-  <title>Go upload</title>
-  {{.Name}}
-  <body>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+           <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.js"></script>
+         <script type="text/javascript" src="https://socketloop.com/public/tutorial/html2canvas.js"></script>
 
+  <title>Go upload</title>
+  <body>
+    <h1><<.Filename>> NOT IN STATIC</h1>
+
+  <table ng-app="fakeFacebookMessages" ng-controller="messagesController">
+    <tr>
+      <td>
   <form action="http://localhost:3000/upload" method="post" enctype="multipart/form-data">
   <label for="file">Filename:</label>
   <input type="file" name="file" id="file">
   <input type="submit" name="submit" value="Submit">
   </form>
+  <button ng-click="addMessage()">Add Message</button>
+</td>
+  <td>
+    <div id="target-area">
+                  <div id="generated_conversation">
+          <ul class="ChatLog">
+
+
+            <li ng-click="changeMessage($index)" ng-repeat="message in messages" ng-class="{ChatLog__entry: true==true, ChatLog__entry_mine: message.user==1}">
+
+          <img class="ChatLog__avatar" src="<<.Filename>>" />
+              <p class="ChatLog__message">
+                  {{message.msg}}
+              <time class="ChatLog__timestamp">6 minutes ago</time>
+              </p>
+            </li>
+          </ul>
+      </div>
+          </div>
+  </td>
+  </tr>
+<table>
+  <button type="button" onclick="captureDiv()">Save as Image</button>
+
+
 
   </body>
+
+
+<script>
+
+
+
+var app = angular.module("fakeFacebookMessages", []); 
+app.controller("messagesController", function($scope) {
+    $scope.messages = [];
+
+    $scope.addMessage = function(){
+    $scope.messages.push({"user": 1, "msg":"test"});
+  }
+
+  $scope.changeMessage = function(index){
+    if($scope.messages[index].user == 0){
+      $scope.messages[index].user = 1;
+    }else{
+      $scope.messages[index].user = 0;
+    }
+    $scope.$apply();
+  };
+});
+
+  </script>
   </html>
