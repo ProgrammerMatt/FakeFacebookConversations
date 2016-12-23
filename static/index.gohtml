@@ -7,7 +7,7 @@
   <body>
 <!--   	<h1><<.Filename>> IN STATIC</h1>
  -->
-  <table ng-app="fakeFacebookMessages" ng-controller="messagesController">
+  <table id="facebook" style="display:none;" ng-app="facebookApp" ng-controller="facebookController">
   <!-- 	<tr>
   		<td>
   <form action="http://localhost:3000/upload" method="post" enctype="multipart/form-data">
@@ -38,12 +38,13 @@
 	</tr>
 <table>
 
-
-
   </body>
 
 
 <script>
+
+var type = getParameterByName("type");
+document.getElementById(type).style.display = 'block';
 
 function getParameterByName(name, url) {
     if (!url) {
@@ -57,8 +58,8 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-var app = angular.module("fakeFacebookMessages", []); 
-app.controller("messagesController", function($scope) {
+var facebookApp = angular.module("facebookApp", []); 
+facebookApp.controller("facebookController", function($scope) {
     $scope.messages = [];
 
     var flag = true;
