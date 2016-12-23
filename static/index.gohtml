@@ -5,17 +5,17 @@
 
   <title>Go upload</title>
   <body>
-  	<h1><<.Filename>> IN STATIC</h1>
-
+<!--   	<h1><<.Filename>> IN STATIC</h1>
+ -->
   <table ng-app="fakeFacebookMessages" ng-controller="messagesController">
-  	<tr>
+  <!-- 	<tr>
   		<td>
   <form action="http://localhost:3000/upload" method="post" enctype="multipart/form-data">
   <label for="file">Filename:</label>
   <input type="file" name="file" id="file">
   <input type="submit" name="submit" value="Submit">
   </form>
-  <button ng-click="addMessage()">Add Message</button>
+  <button ng-click="addMessage()">Add Message</button> -->
 </td>
   		<td>
 			<div>
@@ -26,7 +26,7 @@
 
     				<li ng-click="changeMessage($index)" ng-repeat="message in messages" ng-class="{ChatLog__entry: true==true, ChatLog__entry_mine: message.user==1}">
 
-			    <img class="ChatLog__avatar" src="" />
+			    <img class="ChatLog__avatar" ng-src="{{imageURL}}" />
 					    <p class="ChatLog__message">
 					        {{message.msg}}
 				      <time class="ChatLog__timestamp">6 minutes ago</time>
@@ -45,11 +45,40 @@
 
 <script>
 
-
+function getParameterByName(name, url) {
+    if (!url) {
+      url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
 
 var app = angular.module("fakeFacebookMessages", []); 
 app.controller("messagesController", function($scope) {
     $scope.messages = [];
+
+    var flag = true;
+    var message;
+    var user;
+    var i = 1;
+    while(flag == true){
+    	msg = getParameterByName("message"+i);
+    	user = getParameterByName("user"+i);
+    	if(user == null | user == "" | user == undefined){
+    		flag = false;
+    		break;
+    	}else{
+			$scope.messages.push({"user": user, "msg":msg});
+    	}
+    	console.log($scope.messages);
+    	i++;
+    }
+
+    $scope.imageURL = getParameterByName("imageURL");
 
     $scope.addMessage = function(){
 		$scope.messages.push({"user": 1, "msg":"test"});

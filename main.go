@@ -13,6 +13,7 @@ import (
      "io/ioutil"
      "log"
     "html/template"
+    "math/rand"
 )
 
 var testTemplate *template.Template
@@ -81,6 +82,17 @@ func JSONWriter(w http.ResponseWriter, val interface{}) {
     w.Write(b)
 }
 
+var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func randSeq(n int) string {
+    b := make([]rune, n)
+    for i := range b {
+        b[i] = letters[rand.Intn(len(letters))]
+    }
+    return string(b)
+}
+
+
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
   w.Header().Set("Content-Type", "text/html")
 
@@ -93,7 +105,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 
       defer file.Close()
 
-      filename := "tmp/uploadedfile.png"
+      filename := "tmp/"+randSeq(15)
 
       out, err := os.Create("static/"+filename)
       if err != nil {
